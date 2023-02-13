@@ -7,4 +7,26 @@ public class Polyomino {
     }
 
     public PolyominoRow[] Rows { get; set; }
+
+    public override bool Equals(object? obj)
+    {
+        return Equals(obj as Polyomino);
+    }
+
+    public bool Equals(Polyomino? other){
+        return other != null &&
+            other.Rows.Length == Rows.Length &&
+            other.Rows.SequenceEqual(Rows);
+    }
+
+    public override int GetHashCode()
+    {
+        var hashCode = 17;
+        foreach(var row in Rows)
+        {
+            hashCode ^= row.GetHashCode();
+        }
+
+        return hashCode;
+    }
 }

@@ -16,7 +16,7 @@ public class ShapeManipulatorTests
 
     public ShapeManipulatorTests()
     {
-        _subject = new ShapeManipulator(new ShapeComparer());
+        _subject = new ShapeManipulator();
     }
 
     [Theory]
@@ -46,6 +46,7 @@ public class ShapeManipulatorTests
     [InlineData("110101", 2, "111100", 3)]
     [InlineData("011110", 3, "101101", 2)]
     [InlineData("011110", 2, "110011", 3)]
+    [InlineData("1111", 1, "1111", 4)]
     public void ItShouldReturnTheStandardRotation(string input, int inputWidth, string output, int outputWidth)
     {
         this.Given(x => GivenAShape(input, inputWidth))
@@ -56,7 +57,7 @@ public class ShapeManipulatorTests
 
     private void GivenAShape(string input, int inputWidth)
     {
-        _shape = GeneratePolyomino(input, inputWidth);
+        _shape = TestHelpers.GeneratePolyomino(input, inputWidth);
     }
 
     private void WhenRotatingAShape()
@@ -77,21 +78,12 @@ public class ShapeManipulatorTests
     private void ThenItShouldReturnAShape(string output, int outputWidth)
     {
         _resultShape.ShouldNotBeNull();
-        var expectedPolyomino = GeneratePolyomino(output, outputWidth);
+        var expectedPolyomino = TestHelpers.GeneratePolyomino(output, outputWidth);
         _resultShape.Rows.Length.ShouldBe(expectedPolyomino.Rows.Length);
 
         for (var i = 0; i < _resultShape.Rows.Length; i++)
         {
             _resultShape.Rows[i].Columns.ShouldBe(expectedPolyomino.Rows[i].Columns);
         }
-    }
-
-    private Polyomino GeneratePolyomino(string input, int inputWidth)
-    {
-        var rows = Enumerable.Range(0, input.Length / inputWidth)
-            .Select(i => input.Substring(i * inputWidth, inputWidth))
-            .Select(x => new PolyominoRow(Enumerable.Range(0, inputWidth).Select(y => x[y] == '1').ToArray()))
-            .ToArray();
-        return new Polyomino(rows);
     }
 }

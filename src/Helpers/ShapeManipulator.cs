@@ -2,23 +2,17 @@ using PolyominoesChallenge.Models;
 
 namespace PolyominoesChallenge.Helpers;
 
-public class ShapeManipulator
+public class ShapeManipulator : IShapeManipulator
 {
-    private readonly ShapeComparer _shapeComparer;
-
-    public ShapeManipulator(ShapeComparer shapeComparer) 
-    {
-        _shapeComparer = shapeComparer;
-    }
-
     public Polyomino GetStandardShapeRotation(Polyomino input)
     {
         var possibleShapes = Enumerable.Range(0, 4).Select(x => RotateShapeMultipleTimes(input, x))
-            .Distinct(_shapeComparer).ToList();
+            .Distinct().ToList();
         var output = possibleShapes[0];
         foreach (var shape in possibleShapes.Skip(0))
         {
-            if (!output.Rows[0].Columns[0]){
+            if (!output.Rows[0].Columns[0])
+            {
                 output = shape;
                 continue;
             }
@@ -72,7 +66,7 @@ public class ShapeManipulator
                 row.Columns[j] = input.Rows[inputRow].Columns[i];
             }
         }
-        
+
         return output;
     }
 
