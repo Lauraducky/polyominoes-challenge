@@ -1,11 +1,8 @@
-using System.Diagnostics;
-using PolyominoesChallenge.Helpers;
 using PolyominoesChallenge.Models;
-using Shouldly;
-using TestStack.BDDfy;
-using Xunit;
+using PolyominoesChallenge.Services;
+using PolyominoesChallenge.Tests.Helpers;
 
-namespace PolyominoesChallenge.Tests;
+namespace PolyominoesChallenge.Tests.Services;
 
 public class ShapeManipulatorTests
 {

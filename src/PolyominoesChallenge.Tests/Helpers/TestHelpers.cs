@@ -1,6 +1,6 @@
 using PolyominoesChallenge.Models;
 
-namespace PolyominoesChallenge.Tests;
+namespace PolyominoesChallenge.Tests.Helpers;
 
 public static class TestHelpers
 {

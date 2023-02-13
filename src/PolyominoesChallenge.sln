@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PolyominoesChallenge", "PolyominoesChallenge\PolyominoesChallenge.csproj", "{3EB5EBA6-7942-4513-8B32-B86FA3607394}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PolyominoesChallenge.Tests", "PolyominoesChallenge.Tests\PolyominoesChallenge.Tests.csproj", "{758E8699-12CF-4E27-8478-B987A0940780}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PolyominoesChallenge.Endpoint", "PolyominoesChallenge.Endpoint\PolyominoesChallenge.Endpoint.csproj", "{F9106FC5-7250-4751-AFF6-F18701BB9CB9}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{3EB5EBA6-7942-4513-8B32-B86FA3607394}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3EB5EBA6-7942-4513-8B32-B86FA3607394}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3EB5EBA6-7942-4513-8B32-B86FA3607394}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3EB5EBA6-7942-4513-8B32-B86FA3607394}.Release|Any CPU.Build.0 = Release|Any CPU
+		{758E8699-12CF-4E27-8478-B987A0940780}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{758E8699-12CF-4E27-8478-B987A0940780}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{758E8699-12CF-4E27-8478-B987A0940780}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{758E8699-12CF-4E27-8478-B987A0940780}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F9106FC5-7250-4751-AFF6-F18701BB9CB9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F9106FC5-7250-4751-AFF6-F18701BB9CB9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F9106FC5-7250-4751-AFF6-F18701BB9CB9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F9106FC5-7250-4751-AFF6-F18701BB9CB9}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal

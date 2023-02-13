@@ -1,6 +1,6 @@
 using PolyominoesChallenge.Models;
 
-namespace PolyominoesChallenge.Helpers;
+namespace PolyominoesChallenge.Services;
 
 public class ShapeGenerator
 {
