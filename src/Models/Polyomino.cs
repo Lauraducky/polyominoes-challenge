@@ -1,15 +1,10 @@
-namespace PolyominoesChallenge.Helpers;
+namespace PolyominoesChallenge.Models;
 
 public class Polyomino {
-    public List<PolyominoRow> Rows { get; set; }
-
-    public override bool Equals(object? obj)
+    public Polyomino(PolyominoRow[] rows)
     {
-        return base.Equals(obj);
+        Rows = rows;
     }
 
-    public override int GetHashCode()
-    {
-        return base.GetHashCode();
-    }
+    public PolyominoRow[] Rows { get; set; }
 }

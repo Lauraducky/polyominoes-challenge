@@ -1,2 +1,4 @@
-﻿// See https://aka.ms/new-console-template for more information
-Console.WriteLine("Hello, World!");
+﻿// generate all shapes that connect
+// rotate & flip to standard orientation
+// compare & remove dupes
+// return response
