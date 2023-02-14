@@ -27,8 +27,9 @@ public class ShapeEquivalenceComparerTests
     // flipped shapes
     [InlineData("011110", 2, "011110", 3, false, "110011", 3, "101101", 2, "110011", 3, "110011", 3, true)]
     // not equivalent
-    // [InlineData("011110", 2, "110011", 3)]
+    [InlineData("111010", 2, "011110", 3, false, "111001", 3, "101101", 2, "110011", 3, "110011", 3, false)]
     // not equivalent flipped allowed
+    [InlineData("011110", 2, "011110", 3, true, "110011", 3, "101101", 2, "110011", 3, "110011", 3, false)]
     public void ItShouldTestShapeEquivalence(string a, int aWidth, string b, int bWidth, bool allowFlippedShapes,
         string aStandard, int aStandardWidth, string bStandard, int bStandardWidth, 
         string bFlipped, int bFlippedWidth, string bFlippedStandard, int bFlippedStandardWidth, 
