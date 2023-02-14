@@ -2,7 +2,8 @@ using PolyominoesChallenge.Models;
 
 namespace PolyominoesChallenge.Services;
 
-public class ShapeEquivalenceComparer {
+public class ShapeEquivalenceComparer : IShapeEquivalenceComparer
+{
     private readonly IShapeManipulator _shapeManipulator;
 
     public ShapeEquivalenceComparer(IShapeManipulator shapeManipulator)
