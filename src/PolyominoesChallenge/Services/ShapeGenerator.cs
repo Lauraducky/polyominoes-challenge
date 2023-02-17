@@ -28,7 +28,7 @@ public class ShapeGenerator : IShapeGenerator
         }
         
         var shapes = GetAllVariations(allPartitions.ToArray(), size);
-        shapes = _polyominoValidator.RemoveInvalidPolyominoes(shapes);
+        shapes = _polyominoValidator.RemoveInvalidPolyominoes(shapes, size);
         
         return _uniquePolyominoFinder.GetUniquePolyominoes(shapes.ToArray(), allowFlippedShapes);
     }
