@@ -14,10 +14,10 @@ public class UniquePolyominoFinderTests
     private bool _allowFlippedShapes;
     private Polyomino[]? _output;
 
-    private Polyomino a = TestHelpers.GeneratePolyomino("111010", 2);
-    private Polyomino b = TestHelpers.GeneratePolyomino("100111", 3);
-    private Polyomino c = TestHelpers.GeneratePolyomino("011110", 2);
-    private Polyomino d = TestHelpers.GeneratePolyomino("011110", 3);
+    private readonly Polyomino _a = TestHelpers.GeneratePolyomino("111010", 2);
+    private readonly Polyomino _b = TestHelpers.GeneratePolyomino("100111", 3);
+    private readonly Polyomino _c = TestHelpers.GeneratePolyomino("011110", 2);
+    private readonly Polyomino _d = TestHelpers.GeneratePolyomino("011110", 3);
 
     public UniquePolyominoFinderTests()
     {
@@ -40,8 +40,8 @@ public class UniquePolyominoFinderTests
 
     private void GivenAListOfShapes()
     {
-        _input = new Polyomino[] {
-            a, b, c, d, a
+        _input = new[] {
+            _a, _b, _c, _d, _a
         };
     }
 
@@ -52,24 +52,24 @@ public class UniquePolyominoFinderTests
 
     private void GivenShapeEquivalenceComparerEvaluatesShapes()
     {
-        _shapeEquivalenceComparer.AreShapesEquivalent(a, a, _allowFlippedShapes).Returns(true);
-        _shapeEquivalenceComparer.AreShapesEquivalent(a, b, _allowFlippedShapes).Returns(true);
-        _shapeEquivalenceComparer.AreShapesEquivalent(b, b, _allowFlippedShapes).Returns(true);
-        _shapeEquivalenceComparer.AreShapesEquivalent(b, a, _allowFlippedShapes).Returns(true);
-        _shapeEquivalenceComparer.AreShapesEquivalent(c, c, _allowFlippedShapes).Returns(true);
-        _shapeEquivalenceComparer.AreShapesEquivalent(a, c, _allowFlippedShapes).Returns(false);
-        _shapeEquivalenceComparer.AreShapesEquivalent(c, a, _allowFlippedShapes).Returns(false);
-        _shapeEquivalenceComparer.AreShapesEquivalent(b, c, _allowFlippedShapes).Returns(false);
-        _shapeEquivalenceComparer.AreShapesEquivalent(c, b, _allowFlippedShapes).Returns(false);
-        _shapeEquivalenceComparer.AreShapesEquivalent(d, d, _allowFlippedShapes).Returns(true);
-        _shapeEquivalenceComparer.AreShapesEquivalent(a, d, _allowFlippedShapes).Returns(false);
-        _shapeEquivalenceComparer.AreShapesEquivalent(d, a, _allowFlippedShapes).Returns(false);
-        _shapeEquivalenceComparer.AreShapesEquivalent(b, d, _allowFlippedShapes).Returns(false);
-        _shapeEquivalenceComparer.AreShapesEquivalent(d, b, _allowFlippedShapes).Returns(false);
-        _shapeEquivalenceComparer.AreShapesEquivalent(c, d, false).Returns(true);
-        _shapeEquivalenceComparer.AreShapesEquivalent(d, c, false).Returns(true);
-        _shapeEquivalenceComparer.AreShapesEquivalent(c, d, true).Returns(false);
-        _shapeEquivalenceComparer.AreShapesEquivalent(d, c, true).Returns(false);
+        _shapeEquivalenceComparer.AreShapesEquivalent(_a, _a, _allowFlippedShapes).Returns(true);
+        _shapeEquivalenceComparer.AreShapesEquivalent(_a, _b, _allowFlippedShapes).Returns(true);
+        _shapeEquivalenceComparer.AreShapesEquivalent(_b, _b, _allowFlippedShapes).Returns(true);
+        _shapeEquivalenceComparer.AreShapesEquivalent(_b, _a, _allowFlippedShapes).Returns(true);
+        _shapeEquivalenceComparer.AreShapesEquivalent(_c, _c, _allowFlippedShapes).Returns(true);
+        _shapeEquivalenceComparer.AreShapesEquivalent(_a, _c, _allowFlippedShapes).Returns(false);
+        _shapeEquivalenceComparer.AreShapesEquivalent(_c, _a, _allowFlippedShapes).Returns(false);
+        _shapeEquivalenceComparer.AreShapesEquivalent(_b, _c, _allowFlippedShapes).Returns(false);
+        _shapeEquivalenceComparer.AreShapesEquivalent(_c, _b, _allowFlippedShapes).Returns(false);
+        _shapeEquivalenceComparer.AreShapesEquivalent(_d, _d, _allowFlippedShapes).Returns(true);
+        _shapeEquivalenceComparer.AreShapesEquivalent(_a, _d, _allowFlippedShapes).Returns(false);
+        _shapeEquivalenceComparer.AreShapesEquivalent(_d, _a, _allowFlippedShapes).Returns(false);
+        _shapeEquivalenceComparer.AreShapesEquivalent(_b, _d, _allowFlippedShapes).Returns(false);
+        _shapeEquivalenceComparer.AreShapesEquivalent(_d, _b, _allowFlippedShapes).Returns(false);
+        _shapeEquivalenceComparer.AreShapesEquivalent(_c, _d, false).Returns(true);
+        _shapeEquivalenceComparer.AreShapesEquivalent(_d, _c, false).Returns(true);
+        _shapeEquivalenceComparer.AreShapesEquivalent(_c, _d, true).Returns(false);
+        _shapeEquivalenceComparer.AreShapesEquivalent(_d, _c, true).Returns(false);
     }
 
     private void WhenGettingUniquePolyominoes()

@@ -30,6 +30,12 @@ public class ShapeEquivalenceComparerTests
     [InlineData("111010", 2, "011110", 3, false, "111001", 3, "101101", 2, "110011", 3, "110011", 3, false)]
     // not equivalent flipped allowed
     [InlineData("011110", 2, "011110", 3, true, "110011", 3, "101101", 2, "110011", 3, "110011", 3, false)]
+    // non standard rotation
+    [InlineData("010111010", 3, "010111010", 3, false, "010111010", 3, "010111010", 3, "010111010", 3, "010111010", 3, true)]
+    // non standard rotation, requires flip
+    [InlineData("0100011111010100", 4, "0110001011110100", 4, false, "0100011111010100", 4, "0110001011110100", 4, "0110010011110010", 4, "0110010011110010", 4, true)]
+    // non standard rotation, flipped allowed
+    [InlineData("0100011111010100", 4, "0110001011110100", 4, true, "0100011111010100", 4, "0110001011110100", 4, "0110010011110010", 4, "0110010011110010", 4, false)]
     public void ItShouldTestShapeEquivalence(string a, int aWidth, string b, int bWidth, bool allowFlippedShapes,
         string aStandard, int aStandardWidth, string bStandard, int bStandardWidth, 
         string bFlipped, int bFlippedWidth, string bFlippedStandard, int bFlippedStandardWidth, 
@@ -42,6 +48,7 @@ public class ShapeEquivalenceComparerTests
             .And(x => GivenGetStandardRotationReturns(b, bWidth, bStandard, bStandardWidth))
             .And(x => GivenFlipShapeHorizontallyReturns(b, bWidth, bFlipped, bFlippedWidth))
             .And(x => GivenGetStandardRotationReturns(bFlipped, bFlippedWidth, bFlippedStandard, bFlippedStandardWidth))
+            .And(x => GivenGetShapeRotationsReturnsRotations())
             .When(x => WhenGettingShapeEquivalence())
             .Then(x => ThenItShouldReturn(equivalent))
             .BDDfy();
@@ -72,6 +79,38 @@ public class ShapeEquivalenceComparerTests
     {
         _shapeManipulator.FlipShapeHorizontally(TestHelpers.GeneratePolyomino(input, inputWidth))
             .Returns(TestHelpers.GeneratePolyomino(output, outputWidth));
+    }
+
+    private void GivenGetShapeRotationsReturnsRotations()
+    {
+        var nonStandardA = TestHelpers.GeneratePolyomino("010111010", 3);
+        _shapeManipulator.GetAllShapeRotations(nonStandardA).Returns(new[] { nonStandardA });
+        
+        var nonStandardB = TestHelpers.GeneratePolyomino("0100011111010100", 4);
+        var nonStandardB1 = TestHelpers.GeneratePolyomino("0100111100100110", 4);
+        var nonStandardB2 = TestHelpers.GeneratePolyomino("0010101111100010", 4);
+        var nonStandardB3 = TestHelpers.GeneratePolyomino("0110010011110010", 4);
+        _shapeManipulator.GetAllShapeRotations(nonStandardB)
+            .Returns(new[] { nonStandardB, nonStandardB1, nonStandardB2, nonStandardB3 });
+        _shapeManipulator.GetAllShapeRotations(nonStandardB1)
+            .Returns(new[] { nonStandardB, nonStandardB1, nonStandardB2, nonStandardB3 });
+        _shapeManipulator.GetAllShapeRotations(nonStandardB2)
+            .Returns(new[] { nonStandardB, nonStandardB1, nonStandardB2, nonStandardB3 });
+        _shapeManipulator.GetAllShapeRotations(nonStandardB3)
+            .Returns(new[] { nonStandardB, nonStandardB1, nonStandardB2, nonStandardB3 });
+        
+        var nonStandardC = TestHelpers.GeneratePolyomino("0010111010110010", 4);
+        var nonStandardC1 = TestHelpers.GeneratePolyomino("0110001011110100", 4);
+        var nonStandardC2 = TestHelpers.GeneratePolyomino("0100110101110100", 4);
+        var nonStandardC3 = TestHelpers.GeneratePolyomino("0010111101000110", 4);
+        _shapeManipulator.GetAllShapeRotations(nonStandardC)
+            .Returns(new[] { nonStandardC, nonStandardC1, nonStandardC2, nonStandardC3 });
+        _shapeManipulator.GetAllShapeRotations(nonStandardC1)
+            .Returns(new[] { nonStandardC, nonStandardC1, nonStandardC2, nonStandardC3 });
+        _shapeManipulator.GetAllShapeRotations(nonStandardC2)
+            .Returns(new[] { nonStandardC, nonStandardC1, nonStandardC2, nonStandardC3 });
+        _shapeManipulator.GetAllShapeRotations(nonStandardC3)
+            .Returns(new[] { nonStandardC, nonStandardC1, nonStandardC2, nonStandardC3 });
     }
 
     private void WhenGettingShapeEquivalence()

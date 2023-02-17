@@ -10,6 +10,7 @@ public class ShapeManipulatorTests
 
     private Polyomino? _shape;
     private Polyomino? _resultShape;
+    private Polyomino[] _rotations;
 
     public ShapeManipulatorTests()
     {
@@ -52,6 +53,19 @@ public class ShapeManipulatorTests
             .BDDfy();
     }
 
+    [Theory]
+    [InlineData("1111", 1, 2)]
+    [InlineData("011110", 2, 2)]
+    [InlineData("010111010", 3, 1)]
+    [InlineData("111010", 2, 4)]
+    public void ItShouldReturnAllShapeRotations(string input, int inputWidth, int numRotations)
+    {
+        this.Given(x => GivenAShape(input, inputWidth))
+            .When(x => WhenGettingAllShapeRotations())
+            .Then(x => ThenItShouldReturnRotations(numRotations))
+            .BDDfy();
+    }
+
     private void GivenAShape(string input, int inputWidth)
     {
         _shape = TestHelpers.GeneratePolyomino(input, inputWidth);
@@ -72,6 +86,11 @@ public class ShapeManipulatorTests
         _resultShape = _subject.GetStandardShapeRotation(_shape!);
     }
 
+    private void WhenGettingAllShapeRotations()
+    {
+        _rotations = _subject.GetAllShapeRotations(_shape!);
+    }
+
     private void ThenItShouldReturnAShape(string output, int outputWidth)
     {
         _resultShape.ShouldNotBeNull();
@@ -82,5 +101,11 @@ public class ShapeManipulatorTests
         {
             _resultShape.Rows[i].Columns.ShouldBe(expectedPolyomino.Rows[i].Columns);
         }
+    }
+
+    private void ThenItShouldReturnRotations(int numRotations)
+    {
+        _rotations.ShouldNotBeNull();
+        _rotations.Length.ShouldBe(numRotations);
     }
 }

@@ -31,6 +31,12 @@ public class ShapeManipulator : IShapeManipulator
         return output;
     }
 
+    public Polyomino[] GetAllShapeRotations(Polyomino input)
+    {
+        return Enumerable.Range(0, 4).Select(x => RotateShapeMultipleTimes(input, x))
+            .Distinct().ToArray();
+    }
+
     private int GetNumConsecutiveCells(PolyominoRow row)
     {
         var index = 0;
