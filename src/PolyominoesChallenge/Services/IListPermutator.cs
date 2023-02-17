@@ -1,6 +1,9 @@
+using PolyominoesChallenge.Models;
+
 namespace PolyominoesChallenge.Services;
 
 public interface IListPermutator
 {
-    int[][] GetAllListPermutations(int[] sequence);
+    int[][] GetAllPartitionPermutations(int[] sequence);
+    PolyominoRow[] GetAllRowPermutations(PolyominoRow row);
 }

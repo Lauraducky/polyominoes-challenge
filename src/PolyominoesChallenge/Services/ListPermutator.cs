@@ -1,3 +1,5 @@
+using PolyominoesChallenge.Models;
+
 namespace PolyominoesChallenge.Services;
 
 public class ListPermutator : IListPermutator
@@ -9,14 +11,21 @@ public class ListPermutator : IListPermutator
         _integerArrayComparer = integerArrayComparer;
     }
     
-    public int[][] GetAllListPermutations(int[] sequence)
+    public int[][] GetAllPartitionPermutations(int[] sequence)
     {
         var list = new List<int>(sequence);
         var permutations = Permutate(list, sequence.Length).Select(x => x.ToArray()).Distinct(_integerArrayComparer);
         return permutations.ToArray();
     }
 
-    private IEnumerable<IList<int>> Permutate(IList<int> sequence, int count)
+    public PolyominoRow[] GetAllRowPermutations(PolyominoRow row)
+    {
+        var list = new List<bool>(row.Columns);
+        var permutations = Permutate(list, list.Count).Select(x => new PolyominoRow(x.ToArray())).Distinct();
+        return permutations.ToArray();
+    }
+
+    private IEnumerable<IList<T>> Permutate<T>(IList<T> sequence, int count)
     {
         if (count == 1)
         {
@@ -36,7 +45,7 @@ public class ListPermutator : IListPermutator
         }
     }
 
-    private void RotateRight(IList<int> sequence, int count)
+    private void RotateRight<T>(IList<T> sequence, int count)
     {
         var tmp = sequence[count - 1];
         sequence.RemoveAt(count - 1);
