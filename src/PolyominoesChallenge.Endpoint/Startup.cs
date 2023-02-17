@@ -22,6 +22,7 @@ internal class Startup
         services.AddTransient<IPartitionService, PartitionService>();
         services.AddTransient<IListPermutator, ListPermutator>();
         services.AddTransient<IEqualityComparer<int[]>, IntegerArrayComparer>();
+        services.AddTransient<IPolyominoValidator, PolyominoValidator>();
         services.AddTransient<IShapeGenerator, ShapeGenerator>();
     }
 }

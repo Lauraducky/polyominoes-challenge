@@ -12,4 +12,11 @@ IServiceProvider serviceProvider = services.BuildServiceProvider();
 
 var shapeGenerator = serviceProvider.GetRequiredService<IShapeGenerator>();
 var shapes = shapeGenerator.GenerateShapes(size, allowFlippedShapes);
+
+for (var i = 0; i < shapes.Length; i++)
+{
+    Console.WriteLine("Shape " + i);
+    Console.WriteLine(shapes[i].ToString());
+}
+
 Console.WriteLine("done");

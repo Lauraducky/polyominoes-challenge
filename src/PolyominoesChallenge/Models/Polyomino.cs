@@ -29,4 +29,9 @@ public class Polyomino {
 
         return hashCode;
     }
+
+    public override string ToString()
+    {
+        return string.Join("\n", Rows.Select(x => x.ToString()));
+    }
 }

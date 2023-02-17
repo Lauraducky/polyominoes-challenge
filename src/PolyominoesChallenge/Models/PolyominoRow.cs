@@ -29,4 +29,9 @@ public class PolyominoRow {
 
         return hashCode;
     }
+
+    public override string ToString()
+    {
+        return string.Concat(Columns.Select(x => x ? "X" : " "));
+    }
 }

@@ -7,12 +7,15 @@ public class ShapeGenerator : IShapeGenerator
     private readonly IPartitionService _partitionService;
     private readonly IListPermutator _listPermutator;
     private readonly IUniquePolyominoFinder _uniquePolyominoFinder;
+    private readonly IPolyominoValidator _polyominoValidator;
 
-    public ShapeGenerator(IPartitionService partitionService, IListPermutator listPermutator, IUniquePolyominoFinder uniquePolyominoFinder)
+    public ShapeGenerator(IPartitionService partitionService, IListPermutator listPermutator, 
+        IUniquePolyominoFinder uniquePolyominoFinder, IPolyominoValidator polyominoValidator)
     {
         _partitionService = partitionService;
         _listPermutator = listPermutator;
         _uniquePolyominoFinder = uniquePolyominoFinder;
+        _polyominoValidator = polyominoValidator;
     }
     
     public Polyomino[] GenerateShapes(int size, bool allowFlippedShapes)
@@ -25,7 +28,7 @@ public class ShapeGenerator : IShapeGenerator
         }
         
         var shapes = GetAllVariations(allPartitions.ToArray(), size);
-        //todo remove non legal polyominoes
+        shapes = _polyominoValidator.RemoveInvalidPolyominoes(shapes);
         
         return _uniquePolyominoFinder.GetUniquePolyominoes(shapes.ToArray(), allowFlippedShapes);
     }
