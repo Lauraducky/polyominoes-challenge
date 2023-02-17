@@ -2,7 +2,7 @@ using PolyominoesChallenge.Models;
 
 namespace PolyominoesChallenge.Services;
 
-public class UniquePolyominoFinder
+public class UniquePolyominoFinder : IUniquePolyominoFinder
 {
     private readonly IShapeEquivalenceComparer _shapeEquivalenceComparer;
 
