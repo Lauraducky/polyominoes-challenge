@@ -53,18 +53,6 @@ public class ShapeManipulator : IShapeManipulator
 
     public Polyomino FlipShapeHorizontally(Polyomino input)
     {
-        var output = new bool[input.Rows.Length][];
-        for (var i = 0; i < input.Rows.Length; i++)
-        {
-            output[i] = new bool[input.Rows[i].Columns.Length];
-            var row = output[i];
-            for (var j = 0; j < row.Length; j++)
-            {
-                var inputColumn = row.Length - 1 - j;
-                row[j] = input.Rows[i].Columns[inputColumn];
-            }
-        }
-
-        return new Polyomino(output.Select(x => new PolyominoRow(x)).ToArray());
+        return new Polyomino(input.Rows.Select(x => new PolyominoRow(x.Columns.Reverse().ToArray())).ToArray());
     }
 }

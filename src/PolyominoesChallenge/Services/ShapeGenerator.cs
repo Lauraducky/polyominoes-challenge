@@ -35,7 +35,7 @@ public class ShapeGenerator : IShapeGenerator
         Console.WriteLine($"{stopwatch.Elapsed} passed while generating {allPartitions.Count} partition permutations.");
         stopwatch.Reset();
         stopwatch.Start();
-        var shapes = GetAllVariations(allPartitions.ToArray(), size);
+        var shapes = GetAllVariations(allPartitions, size).ToArray();
         Console.WriteLine($"{stopwatch.Elapsed} passed while generating {shapes.Length} shapes.");
         var totalShapes = shapes.Length;
         stopwatch.Reset();
@@ -51,7 +51,7 @@ public class ShapeGenerator : IShapeGenerator
         return shapes;
     }
 
-    private Polyomino[] GetAllVariations(int[][] input, int size)
+    private IEnumerable<Polyomino> GetAllVariations(IEnumerable<int[]> input, int size)
     {
         var response = new List<Polyomino>();
 
@@ -73,10 +73,10 @@ public class ShapeGenerator : IShapeGenerator
             }
         }
 
-        return response.ToArray();
+        return response;
     }
 
-    private Polyomino[] GenerateVariationsOfWidth(int[] partition, int width)
+    private IEnumerable<Polyomino> GenerateVariationsOfWidth(int[] partition, int width)
     {
         var rows = new List<PolyominoRow[]>();
         foreach (var row in partition)
@@ -85,7 +85,7 @@ public class ShapeGenerator : IShapeGenerator
             rows.Add(_listPermutator.GetAllRowPermutations(initialRow));
         }
 
-        var polyominoes = GetAllRowCombinations(rows.ToArray());
+        var polyominoes = GetAllRowCombinations(rows);
         return polyominoes;
     }
 
@@ -104,17 +104,12 @@ public class ShapeGenerator : IShapeGenerator
         return new PolyominoRow(row);
     }
 
-    private Polyomino[] GetAllRowCombinations(PolyominoRow[][] rows)
+    private IEnumerable<Polyomino> GetAllRowCombinations(IEnumerable<IEnumerable<PolyominoRow>> rows)
     {
-        var combinations = new List<List<PolyominoRow>>();
+        var combinations = new List<List<PolyominoRow>> { new() };
         foreach (var row in rows)
         {
-            if (combinations.Count == 0)
-            {
-                combinations.Add(new List<PolyominoRow>());
-            }
-            
-            var current = combinations.ToArray();
+            var current = new List<List<PolyominoRow>>(combinations);
             combinations.Clear();
             
             foreach (var rowPermutation in row)
@@ -124,6 +119,6 @@ public class ShapeGenerator : IShapeGenerator
             }
         }
 
-        return combinations.Select(x => new Polyomino(x.ToArray())).ToArray();
+        return combinations.Select(x => new Polyomino(x.ToArray()));
     }
 }
