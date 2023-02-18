@@ -29,7 +29,9 @@ public class PolyominoValidator : IPolyominoValidator
 
     public bool IsValidPolyomino(Polyomino polyomino, int size)
     {
-        for(var j = 0; j < polyomino.Rows[0].Columns.Length; j++)
+        var width = polyomino.Rows[0].Columns.Length;
+        var height = polyomino.Rows.Length;
+        for(var j = 0; j < width; j++)
         {
             if (polyomino.Rows.All(x => !x.Columns[j]))
             {
@@ -40,9 +42,9 @@ public class PolyominoValidator : IPolyominoValidator
             {
                 if (polyomino.Rows[i].Columns[j] && 
                     (i == 0 || !polyomino.Rows[i-1].Columns[j]) &&
-                    (i == polyomino.Rows.Length - 1 || !polyomino.Rows[i+1].Columns[j]) &&
+                    (i == height - 1 || !polyomino.Rows[i+1].Columns[j]) &&
                     (j == 0 || !polyomino.Rows[i].Columns[j-1]) &&
-                    (j == polyomino.Rows[i].Columns.Length - 1 || !polyomino.Rows[i].Columns[j+1]))
+                    (j == width - 1 || !polyomino.Rows[i].Columns[j+1]))
                 {
                     return false;
                 }
