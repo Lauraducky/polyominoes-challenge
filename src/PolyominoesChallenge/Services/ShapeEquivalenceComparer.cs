@@ -13,17 +13,14 @@ public class ShapeEquivalenceComparer : IShapeEquivalenceComparer
 
     public bool AreShapesEquivalent(Polyomino a, Polyomino b, bool allowFlippedShapes = false) 
     {
-        var standardA = _shapeManipulator.GetStandardShapeRotation(a);
-        var standardB = _shapeManipulator.GetStandardShapeRotation(b);
-
-        if (!standardA.Rows[0].Columns[0] || !standardB.Rows[0].Columns[0])
+        if (!a.Rows[0].Columns[0] || !b.Rows[0].Columns[0])
         {
             if (CompareShapeRotations(a, b))
             {
                 return true;
             }
         }
-        else if (standardA.Equals(standardB))
+        else if (a.Equals(b))
         {
             return true;
         }
@@ -36,12 +33,12 @@ public class ShapeEquivalenceComparer : IShapeEquivalenceComparer
         var flippedB = _shapeManipulator.FlipShapeHorizontally(b);
         var standardFlippedB = _shapeManipulator.GetStandardShapeRotation(flippedB);
         
-        if (!standardA.Rows[0].Columns[0] || !standardFlippedB.Rows[0].Columns[0])
+        if (!a.Rows[0].Columns[0] || !standardFlippedB.Rows[0].Columns[0])
         {
-            return CompareShapeRotations(standardA, standardFlippedB);
+            return CompareShapeRotations(a, standardFlippedB);
         }
 
-        return standardA.Equals(standardFlippedB);
+        return a.Equals(standardFlippedB);
     }
 
     public bool CompareShapeRotations(Polyomino a, Polyomino b)
