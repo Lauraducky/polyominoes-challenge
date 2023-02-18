@@ -5,21 +5,25 @@ namespace PolyominoesChallenge.Services;
 public class ShapeManipulator : IShapeManipulator
 {
     private static readonly Dictionary<Polyomino, Polyomino[]> AllShapeRotations = new();
+    private static readonly Dictionary<Polyomino, Polyomino[]> AllEquivalentShapes = new();
 
-    public Polyomino[] GetAllShapeRotations(Polyomino input)
+    public Polyomino[] GetAllEquivalentShapes(Polyomino input, bool allowFlippedShapes)
     {
-        if (AllShapeRotations.ContainsKey(input))
+        if (AllEquivalentShapes.ContainsKey(input))
         {
-            return AllShapeRotations[input];
+            return AllEquivalentShapes[input];
         }
 
-        var output = Enumerable.Range(0, 4).Select(x => RotateShapeMultipleTimes(input, x))
-            .Distinct().ToArray();
-        foreach(var polyomino in output)
-        {
-            AllShapeRotations[polyomino] = output;
+        var rotations = Enumerable.Range(0, 4).Select(x => RotateShapeMultipleTimes(input, x))
+            .ToList();
+
+        if (!allowFlippedShapes){
+            var flippedShape = FlipShapeHorizontally(input);
+            rotations.AddRange(Enumerable.Range(0, 4).Select(x => RotateShapeMultipleTimes(flippedShape, x)));
         }
         
+        var output = rotations.Distinct().ToArray();
+        AllEquivalentShapes[input] = output;
         return output;
     }
 
