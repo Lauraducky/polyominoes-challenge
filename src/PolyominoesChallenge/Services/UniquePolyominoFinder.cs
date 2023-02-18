@@ -14,13 +14,23 @@ public class UniquePolyominoFinder : IUniquePolyominoFinder
     public Polyomino[] GetUniquePolyominoes(Polyomino[] input, bool allowFlippedShapes = false)
     {
         var output = new List<Polyomino>(input);
-        for (var i = output.Count - 1; i > 0; i--)
+        var indicesToRemove = new List<int>();
+        for (var i = 0; i < output.Count; i++)
         {
             var current = output[i];
-            if (output.Take(i).Any(x => _shapeEquivalenceComparer.AreShapesEquivalent(x, current, allowFlippedShapes)))
+            foreach (var polyomino in output.Select((value, index) => new{index, value}).Skip(i + 1))
             {
-                output.RemoveAt(i);
+                if (_shapeEquivalenceComparer.AreShapesEquivalent(current, polyomino.value, allowFlippedShapes))
+                {
+                    indicesToRemove.Add(polyomino.index);
+                }
             }
+
+            for (var j = indicesToRemove.Count - 1; j >= 0; j--)
+            {
+                output.RemoveAt(indicesToRemove[j]);
+            }
+            indicesToRemove.Clear();
         }
 
         return output.ToArray();
