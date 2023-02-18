@@ -7,6 +7,7 @@ namespace PolyominoesChallenge.Tests.Services;
 public class UniquePolyominoFinderTests
 {
     private readonly IShapeEquivalenceComparer _shapeEquivalenceComparer;
+    private readonly IShapeManipulator _shapeManipulator;
     
     private readonly UniquePolyominoFinder _subject;
 
@@ -22,7 +23,8 @@ public class UniquePolyominoFinderTests
     public UniquePolyominoFinderTests()
     {
         _shapeEquivalenceComparer = Substitute.For<IShapeEquivalenceComparer>();
-        _subject = new UniquePolyominoFinder(_shapeEquivalenceComparer);
+        _shapeManipulator = Substitute.For<IShapeManipulator>();
+        _subject = new UniquePolyominoFinder(_shapeEquivalenceComparer, _shapeManipulator);
     }
 
     [Theory]
@@ -33,6 +35,7 @@ public class UniquePolyominoFinderTests
         this.Given(x => GivenAListOfShapes())
             .And(x => GivenFlippedShapesAreAllowed(allowFlippedShapes))
             .And(x => GivenShapeEquivalenceComparerEvaluatesShapes())
+            .And(x => GivenShapeManipulatorReturnsStandardRotations())
             .When(x => WhenGettingUniquePolyominoes())
             .Then(x => ThenItShouldReturnAListOfLength(expectedOutputLength))
             .BDDfy();
@@ -70,6 +73,11 @@ public class UniquePolyominoFinderTests
         _shapeEquivalenceComparer.AreShapesEquivalent(_d, _c, false).Returns(true);
         _shapeEquivalenceComparer.AreShapesEquivalent(_c, _d, true).Returns(false);
         _shapeEquivalenceComparer.AreShapesEquivalent(_d, _c, true).Returns(false);
+    }
+
+    private void GivenShapeManipulatorReturnsStandardRotations()
+    {
+        _shapeManipulator.GetStandardShapeRotation(Arg.Any<Polyomino>()).Returns(x => x.ArgAt<Polyomino>(0));
     }
 
     private void WhenGettingUniquePolyominoes()

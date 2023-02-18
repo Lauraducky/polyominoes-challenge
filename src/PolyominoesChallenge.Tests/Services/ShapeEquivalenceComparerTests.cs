@@ -23,29 +23,26 @@ public class ShapeEquivalenceComparerTests
 
     [Theory]
     // rotated shapes
-    [InlineData("111010", 2, "100111", 3, false, "111001", 3, "111001", 3, "001111", 3, "111100", 3, true)]
+    [InlineData("111001", 3, "111001", 3, false, "001111", 3, "111100", 3, true)]
     // flipped shapes
-    [InlineData("011110", 2, "011110", 3, false, "110011", 3, "101101", 2, "110011", 3, "110011", 3, true)]
+    [InlineData("110011", 3, "101101", 2, false, "110011", 3, "110011", 3, true)]
     // not equivalent
-    [InlineData("111010", 2, "011110", 3, false, "111001", 3, "101101", 2, "110011", 3, "110011", 3, false)]
+    [InlineData("111001", 3, "101101", 2, false, "110011", 3, "110011", 3, false)]
     // not equivalent flipped allowed
-    [InlineData("011110", 2, "011110", 3, true, "110011", 3, "101101", 2, "110011", 3, "110011", 3, false)]
+    [InlineData("110011", 3, "101101", 2, true, "110011", 3, "110011", 3, false)]
     // non standard rotation
-    [InlineData("010111010", 3, "010111010", 3, false, "010111010", 3, "010111010", 3, "010111010", 3, "010111010", 3, true)]
+    [InlineData("010111010", 3, "010111010", 3, false, "010111010", 3, "010111010", 3, true)]
     // non standard rotation, requires flip
-    [InlineData("0100011111010100", 4, "0110001011110100", 4, false, "0100011111010100", 4, "0110001011110100", 4, "0110010011110010", 4, "0110010011110010", 4, true)]
+    [InlineData("0100011111010100", 4, "0110001011110100", 4, false, "0110010011110010", 4, "0110010011110010", 4, true)]
     // non standard rotation, flipped allowed
-    [InlineData("0100011111010100", 4, "0110001011110100", 4, true, "0100011111010100", 4, "0110001011110100", 4, "0110010011110010", 4, "0110010011110010", 4, false)]
+    [InlineData("0100011111010100", 4, "0110001011110100", 4, true, "0110010011110010", 4, "0110010011110010", 4, false)]
     public void ItShouldTestShapeEquivalence(string a, int aWidth, string b, int bWidth, bool allowFlippedShapes,
-        string aStandard, int aStandardWidth, string bStandard, int bStandardWidth, 
         string bFlipped, int bFlippedWidth, string bFlippedStandard, int bFlippedStandardWidth, 
         bool equivalent)
     {
         this.Given(x => GivenAShape(a, aWidth))
             .And(x => GivenAnotherShape(b, bWidth))
             .And(x => GivenAllowFlippedShapes(allowFlippedShapes))
-            .And(x => GivenGetStandardRotationReturns(a, aWidth, aStandard, aStandardWidth))
-            .And(x => GivenGetStandardRotationReturns(b, bWidth, bStandard, bStandardWidth))
             .And(x => GivenFlipShapeHorizontallyReturns(b, bWidth, bFlipped, bFlippedWidth))
             .And(x => GivenGetStandardRotationReturns(bFlipped, bFlippedWidth, bFlippedStandard, bFlippedStandardWidth))
             .And(x => GivenGetShapeRotationsReturnsRotations())
