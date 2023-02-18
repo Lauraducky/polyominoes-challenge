@@ -24,5 +24,6 @@ internal class Startup
         services.AddTransient<IEqualityComparer<int[]>, IntegerArrayComparer>();
         services.AddTransient<IPolyominoValidator, PolyominoValidator>();
         services.AddTransient<IShapeGenerator, ShapeGenerator>();
+        services.AddTransient<IPolyominoPrinter, PolyominoPrinter>();
     }
 }

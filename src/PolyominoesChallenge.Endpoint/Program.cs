@@ -13,10 +13,17 @@ IServiceProvider serviceProvider = services.BuildServiceProvider();
 var shapeGenerator = serviceProvider.GetRequiredService<IShapeGenerator>();
 var shapes = shapeGenerator.GenerateShapes(size, allowFlippedShapes);
 
-for (var i = 0; i < shapes.Length; i++)
+if (Environment.GetCommandLineArgs().Length > 3)
 {
-    Console.WriteLine("Shape " + i);
-    Console.WriteLine(shapes[i].ToString());
+    var filePath = Environment.GetCommandLineArgs()[3];
+    var polyominoPrinter = serviceProvider.GetRequiredService<IPolyominoPrinter>();
+    polyominoPrinter.SavePolyominoesToFile(shapes, filePath);
 }
-
-Console.WriteLine("done");
+else
+{
+    for (var i = 0; i < shapes.Length; i++)
+    {
+        Console.WriteLine("Shape " + i);
+        Console.WriteLine(shapes[i].ToString());
+    }
+}
