@@ -1,11 +1,11 @@
 namespace PolyominoesChallenge.Models;
 
 public class Polyomino {
-    internal string stringRepresentation;
+    private readonly string _stringRepresentation;
     public Polyomino(PolyominoRow[] rows)
     {
         Rows = rows;
-        stringRepresentation = ToString();
+        _stringRepresentation = GetStringRepresentation();
     }
 
     public PolyominoRow[] Rows { get; }
@@ -15,17 +15,22 @@ public class Polyomino {
         return Equals(obj as Polyomino);
     }
 
-    public bool Equals(Polyomino? other){
+    private bool Equals(Polyomino? other){
         return other != null &&
-            other.stringRepresentation.Equals(this.stringRepresentation);
+            other._stringRepresentation.Equals(_stringRepresentation);
     }
 
     public override int GetHashCode()
     {
-        return stringRepresentation.GetHashCode();
+        return _stringRepresentation.GetHashCode();
     }
 
     public override string ToString()
+    {
+        return _stringRepresentation;
+    }
+
+    private string GetStringRepresentation()
     {
         return string.Join("\n", Rows.Select(x => x.ToString()));
     }

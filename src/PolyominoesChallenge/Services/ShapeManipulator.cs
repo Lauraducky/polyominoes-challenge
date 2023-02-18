@@ -4,20 +4,20 @@ namespace PolyominoesChallenge.Services;
 
 public class ShapeManipulator : IShapeManipulator
 {
-    private static Dictionary<Polyomino, Polyomino[]> _allShapeRotations = new Dictionary<Polyomino, Polyomino[]>();
+    private static readonly Dictionary<Polyomino, Polyomino[]> AllShapeRotations = new();
 
     public Polyomino[] GetAllShapeRotations(Polyomino input)
     {
-        if (_allShapeRotations.ContainsKey(input))
+        if (AllShapeRotations.ContainsKey(input))
         {
-            return _allShapeRotations[input];
+            return AllShapeRotations[input];
         }
 
         var output = Enumerable.Range(0, 4).Select(x => RotateShapeMultipleTimes(input, x))
             .Distinct().ToArray();
         foreach(var polyomino in output)
         {
-            _allShapeRotations[polyomino] = output;
+            AllShapeRotations[polyomino] = output;
         }
         
         return output;
