@@ -14,13 +14,11 @@ public class PolyominoValidator : IPolyominoValidator
 
     public Polyomino[] RemoveInvalidPolyominoes(Polyomino[] input, int size)
     {
-        var output = new List<Polyomino>(input);
-        for (var i = output.Count - 1; i > 0; i--)
-        {
-            var current = output[i];
-            if (!IsValidPolyomino(input[i], size))
+        var output = new List<Polyomino>();
+        foreach(var polyomino in input){
+            if (IsValidPolyomino(polyomino, size))
             {
-                output.RemoveAt(i);
+                output.Add(polyomino);
             }
         }
 
@@ -76,16 +74,15 @@ public class PolyominoValidator : IPolyominoValidator
 
     private int FloodPolyomino(Polyomino polyomino)
     {
-        var adjacentSquares = new List<int[]>();
+        var adjacentSquares = new Stack<int[]>();
         var floodedSquares = new List<int[]>();
         var height = polyomino.Rows.Length;
         var width = polyomino.Rows[0].Columns.Length;
 
-        adjacentSquares.Add(new[]{0, Array.IndexOf(polyomino.Rows[0].Columns, true)});
+        adjacentSquares.Push(new[]{0, Array.IndexOf(polyomino.Rows[0].Columns, true)});
         do
         {
-            var currentSquare = adjacentSquares[0];
-            adjacentSquares.RemoveAt(0);
+            var currentSquare = adjacentSquares.Pop();
             var y = currentSquare[0];
             var x = currentSquare[1];
             
@@ -98,7 +95,10 @@ public class PolyominoValidator : IPolyominoValidator
             var neighbours = GetAdjacentSquares(polyomino, y, x, height, width)
                 .Where(value => !floodedSquares.Contains(value, _integerArrayComparer) &&
                                 !adjacentSquares.Contains(value, _integerArrayComparer));
-            adjacentSquares.AddRange(neighbours);
+            foreach (var neighbour in neighbours)
+            {
+                adjacentSquares.Push(neighbour);
+            }
         }
         while(adjacentSquares.Count > 0);
 
