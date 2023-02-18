@@ -24,7 +24,7 @@ public class ShapeGenerator : IShapeGenerator
         var stopwatch = new Stopwatch();
         stopwatch.Start();
         var partitions = _partitionService.GetPartitionsOfNumber(size);
-        Console.WriteLine($"{stopwatch.Elapsed} passed while generating partitions.");
+        Console.WriteLine($"{stopwatch.Elapsed} passed while generating {partitions.Length} partitions.");
         stopwatch.Reset();
         stopwatch.Start();
         var allPartitions = new List<int[]>();
@@ -32,20 +32,22 @@ public class ShapeGenerator : IShapeGenerator
         {
             allPartitions.AddRange(_listPermutator.GetAllPartitionPermutations(partition));
         }
-        Console.WriteLine($"{stopwatch.Elapsed} passed while generating partition permutations.");
+        Console.WriteLine($"{stopwatch.Elapsed} passed while generating {allPartitions.Count} partition permutations.");
         stopwatch.Reset();
         stopwatch.Start();
         var shapes = GetAllVariations(allPartitions.ToArray(), size);
-        Console.WriteLine($"{stopwatch.Elapsed} passed while generating shapes.");
+        Console.WriteLine($"{stopwatch.Elapsed} passed while generating {shapes.Length} shapes.");
+        var totalShapes = shapes.Length;
         stopwatch.Reset();
         stopwatch.Start();
         shapes = _polyominoValidator.RemoveInvalidPolyominoes(shapes, size);
-        Console.WriteLine($"{stopwatch.Elapsed} passed while removing invalid shapes.");
+        Console.WriteLine($"{stopwatch.Elapsed} passed while removing {totalShapes - shapes.Length} invalid shapes.");
+        totalShapes = shapes.Length;
         stopwatch.Reset();
         stopwatch.Start();
         
         shapes = _uniquePolyominoFinder.GetUniquePolyominoes(shapes.ToArray(), allowFlippedShapes);
-        Console.WriteLine($"{stopwatch.Elapsed} passed while removing equivalent shapes.");
+        Console.WriteLine($"{stopwatch.Elapsed} passed while removing {totalShapes - shapes.Length} equivalent shapes.");
         return shapes;
     }
 
