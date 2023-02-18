@@ -18,7 +18,6 @@ internal class Startup
     {
         services.AddTransient<IShapeManipulator, ShapeManipulator>();
         services.AddTransient<IShapeEquivalenceComparer, ShapeEquivalenceComparer>();
-        services.AddTransient<IUniquePolyominoFinder, UniquePolyominoFinder>();
         services.AddTransient<IPartitionService, PartitionService>();
         services.AddTransient<IListPermutator, ListPermutator>();
         services.AddTransient<IEqualityComparer<int[]>, IntegerArrayComparer>();

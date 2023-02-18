@@ -7,16 +7,16 @@ public class ShapeGenerator : IShapeGenerator
 {
     private readonly IPartitionService _partitionService;
     private readonly IListPermutator _listPermutator;
-    private readonly IUniquePolyominoFinder _uniquePolyominoFinder;
     private readonly IPolyominoValidator _polyominoValidator;
+    private readonly IShapeEquivalenceComparer _shapeEquivalenceComparer;
 
     public ShapeGenerator(IPartitionService partitionService, IListPermutator listPermutator, 
-        IUniquePolyominoFinder uniquePolyominoFinder, IPolyominoValidator polyominoValidator)
+        IPolyominoValidator polyominoValidator, IShapeEquivalenceComparer shapeEquivalenceComparer)
     {
         _partitionService = partitionService;
         _listPermutator = listPermutator;
-        _uniquePolyominoFinder = uniquePolyominoFinder;
         _polyominoValidator = polyominoValidator;
+        _shapeEquivalenceComparer = shapeEquivalenceComparer;
     }
     
     public Polyomino[] GenerateShapes(int size, bool allowFlippedShapes)
@@ -35,29 +35,20 @@ public class ShapeGenerator : IShapeGenerator
         Console.WriteLine($"{stopwatch.Elapsed} passed while generating {allPartitions.Count} partition permutations.");
         stopwatch.Reset();
         stopwatch.Start();
-        var shapes = GetAllVariations(allPartitions, size).ToArray();
+        var shapes = GetAllVariations(allPartitions, size, allowFlippedShapes).ToArray();
         Console.WriteLine($"{stopwatch.Elapsed} passed while generating {shapes.Length} shapes.");
         var totalShapes = shapes.Length;
-        stopwatch.Reset();
-        stopwatch.Start();
-        shapes = _polyominoValidator.RemoveInvalidPolyominoes(shapes, size);
-        Console.WriteLine($"{stopwatch.Elapsed} passed while removing {totalShapes - shapes.Length} invalid shapes.");
-        totalShapes = shapes.Length;
-        stopwatch.Reset();
-        stopwatch.Start();
         
-        shapes = _uniquePolyominoFinder.GetUniquePolyominoes(shapes.ToArray(), allowFlippedShapes);
-        Console.WriteLine($"{stopwatch.Elapsed} passed while removing {totalShapes - shapes.Length} equivalent shapes.");
         return shapes;
     }
 
-    private IEnumerable<Polyomino> GetAllVariations(IEnumerable<int[]> input, int size)
+    private IEnumerable<Polyomino> GetAllVariations(IEnumerable<int[]> input, int size, bool allowFlippedShapes = false)
     {
         var response = new List<Polyomino>();
-
-        foreach (var partition in input)
+        var inputIndex = 0;
+        foreach (var partition in input.Where(x => !x.All(y => y == 1)))
         {
-            if (partition.Length == 1 || partition.All(x => x == 1))
+            if (partition.Length == 1)
             {
                 // there are no variations on lines
                 var width = partition.Max();
@@ -69,8 +60,14 @@ public class ShapeGenerator : IShapeGenerator
             var minWidth = partition.Max();
             for (var i = minWidth; i <= maxWidth; i++)
             {
-                response.AddRange(GenerateVariationsOfWidth(partition, i));
+                response.AddRange(GenerateVariationsOfWidth(partition, i)
+                    .Where(x => _polyominoValidator.IsValidPolyomino(x, size) && 
+                        !response.Any(y => _shapeEquivalenceComparer.AreShapesEquivalent(x, y, allowFlippedShapes))));
             }
+            if (inputIndex % 50 == 0){
+                Console.WriteLine($"On loop {inputIndex}, generated {response.Count} shapes so far.");
+            }
+            inputIndex++;
         }
 
         return response;

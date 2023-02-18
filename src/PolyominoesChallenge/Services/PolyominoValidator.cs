@@ -5,19 +5,6 @@ namespace PolyominoesChallenge.Services;
 
 public class PolyominoValidator : IPolyominoValidator
 {
-    public Polyomino[] RemoveInvalidPolyominoes(Polyomino[] input, int size)
-    {
-        var output = new List<Polyomino>();
-        foreach(var polyomino in input){
-            if (IsValidPolyomino(polyomino, size))
-            {
-                output.Add(polyomino);
-            }
-        }
-
-        return output.ToArray();
-    }
-
     public bool IsValidPolyomino(Polyomino polyomino, int size)
     {
         var width = polyomino.Rows[0].Columns.Length;
