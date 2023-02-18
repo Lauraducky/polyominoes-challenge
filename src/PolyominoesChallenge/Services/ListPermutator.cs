@@ -6,6 +6,8 @@ public class ListPermutator : IListPermutator
 {
     private readonly IEqualityComparer<int[]> _integerArrayComparer;
 
+    private static Dictionary<PolyominoRow, PolyominoRow[]> _allRowPermutations = new Dictionary<PolyominoRow, PolyominoRow[]>();
+
     public ListPermutator(IEqualityComparer<int[]> integerArrayComparer)
     {
         _integerArrayComparer = integerArrayComparer;
@@ -20,9 +22,19 @@ public class ListPermutator : IListPermutator
 
     public PolyominoRow[] GetAllRowPermutations(PolyominoRow row)
     {
+        if (_allRowPermutations.ContainsKey(row))
+        {
+            return _allRowPermutations[row];
+        }
+
         var list = new List<bool>(row.Columns);
-        var permutations = Permutate(list, list.Count).Select(x => new PolyominoRow(x.ToArray())).Distinct();
-        return permutations.ToArray();
+        var permutations = Permutate(list, list.Count)
+            .Select(x => new PolyominoRow(x.ToArray()))
+            .Distinct()
+            .ToArray();
+        
+        _allRowPermutations[row] = permutations;
+        return permutations;
     }
 
     private IEnumerable<IList<T>> Permutate<T>(IList<T> sequence, int count)

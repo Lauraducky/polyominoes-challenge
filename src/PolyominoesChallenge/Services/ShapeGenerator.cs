@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using PolyominoesChallenge.Models;
 
 namespace PolyominoesChallenge.Services;
@@ -20,17 +21,32 @@ public class ShapeGenerator : IShapeGenerator
     
     public Polyomino[] GenerateShapes(int size, bool allowFlippedShapes)
     {
+        var stopwatch = new Stopwatch();
+        stopwatch.Start();
         var partitions = _partitionService.GetPartitionsOfNumber(size);
+        Console.WriteLine($"{stopwatch.Elapsed} passed while generating partitions.");
+        stopwatch.Reset();
+        stopwatch.Start();
         var allPartitions = new List<int[]>();
         foreach (var partition in partitions)
         {
             allPartitions.AddRange(_listPermutator.GetAllPartitionPermutations(partition));
         }
-        
+        Console.WriteLine($"{stopwatch.Elapsed} passed while generating partition permutations.");
+        stopwatch.Reset();
+        stopwatch.Start();
         var shapes = GetAllVariations(allPartitions.ToArray(), size);
+        Console.WriteLine($"{stopwatch.Elapsed} passed while generating shapes.");
+        stopwatch.Reset();
+        stopwatch.Start();
         shapes = _polyominoValidator.RemoveInvalidPolyominoes(shapes, size);
+        Console.WriteLine($"{stopwatch.Elapsed} passed while removing invalid shapes.");
+        stopwatch.Reset();
+        stopwatch.Start();
         
-        return _uniquePolyominoFinder.GetUniquePolyominoes(shapes.ToArray(), allowFlippedShapes);
+        shapes = _uniquePolyominoFinder.GetUniquePolyominoes(shapes.ToArray(), allowFlippedShapes);
+        Console.WriteLine($"{stopwatch.Elapsed} passed while removing equivalent shapes.");
+        return shapes;
     }
 
     private Polyomino[] GetAllVariations(int[][] input, int size)
