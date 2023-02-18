@@ -66,12 +66,17 @@ public class PolyominoValidator : IPolyominoValidator
             adjacentSquares.RemoveAt(0);
             var y = currentSquare[0];
             var x = currentSquare[1];
-            if (polyomino.Rows[y].Columns[x])
+            
+            if (!polyomino.Rows[y].Columns[x])
             {
-                floodedSquares.Add(currentSquare);
-                adjacentSquares.AddRange(GetAdjacentSquares(polyomino, y, x, height, width)
-                    .Where(x => !floodedSquares.Contains(x, _integerArrayComparer)));
+                continue;
             }
+
+            floodedSquares.Add(currentSquare);
+            var neighbours = GetAdjacentSquares(polyomino, y, x, height, width)
+                .Where(value => !floodedSquares.Contains(value, _integerArrayComparer) &&
+                                !adjacentSquares.Contains(value, _integerArrayComparer));
+            adjacentSquares.AddRange(neighbours);
         }
         while(adjacentSquares.Count > 0);
 

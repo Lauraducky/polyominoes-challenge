@@ -10,7 +10,7 @@ public class ShapeManipulatorTests
 
     private Polyomino? _shape;
     private Polyomino? _resultShape;
-    private Polyomino[] _rotations;
+    private Polyomino[]? _rotations;
 
     public ShapeManipulatorTests()
     {
