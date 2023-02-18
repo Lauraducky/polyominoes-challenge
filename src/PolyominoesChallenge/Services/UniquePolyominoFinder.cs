@@ -16,7 +16,7 @@ public class UniquePolyominoFinder : IUniquePolyominoFinder
         var output = new List<Polyomino>();
         foreach (var polyomino in input)
         {
-            if (!output.Any(x => _shapeEquivalenceComparer.AreShapesEquivalent(x, polyomino)))
+            if (!output.Any(x => _shapeEquivalenceComparer.AreShapesEquivalent(x, polyomino, allowFlippedShapes)))
             {
                 output.Add(polyomino);
             }

@@ -5,13 +5,6 @@ namespace PolyominoesChallenge.Services;
 
 public class PolyominoValidator : IPolyominoValidator
 {
-    private readonly IEqualityComparer<int[]> _integerArrayComparer;
-
-    public PolyominoValidator(IEqualityComparer<int[]> integerArrayComparer)
-    {
-        _integerArrayComparer = integerArrayComparer;
-    }
-
     public Polyomino[] RemoveInvalidPolyominoes(Polyomino[] input, int size)
     {
         var output = new List<Polyomino>();
@@ -74,27 +67,25 @@ public class PolyominoValidator : IPolyominoValidator
 
     private int FloodPolyomino(Polyomino polyomino)
     {
-        var adjacentSquares = new Stack<int[]>();
-        var floodedSquares = new List<int[]>();
+        var adjacentSquares = new Stack<Coordinate>();
+        var floodedSquares = new List<Coordinate>();
         var height = polyomino.Rows.Length;
         var width = polyomino.Rows[0].Columns.Length;
 
-        adjacentSquares.Push(new[]{0, Array.IndexOf(polyomino.Rows[0].Columns, true)});
+        adjacentSquares.Push(new Coordinate {Y = 0, X = Array.IndexOf(polyomino.Rows[0].Columns, true)});
         do
         {
             var currentSquare = adjacentSquares.Pop();
-            var y = currentSquare[0];
-            var x = currentSquare[1];
             
-            if (!polyomino.Rows[y].Columns[x])
+            if (!polyomino.Rows[currentSquare.Y].Columns[currentSquare.X])
             {
                 continue;
             }
 
             floodedSquares.Add(currentSquare);
-            var neighbours = GetAdjacentSquares(polyomino, y, x, height, width)
-                .Where(value => !floodedSquares.Contains(value, _integerArrayComparer) &&
-                                !adjacentSquares.Contains(value, _integerArrayComparer));
+            var neighbours = GetAdjacentSquares(polyomino, currentSquare, height, width)
+                .Where(value => !floodedSquares.Contains(value) &&
+                                !adjacentSquares.Contains(value));
             foreach (var neighbour in neighbours)
             {
                 adjacentSquares.Push(neighbour);
@@ -105,27 +96,27 @@ public class PolyominoValidator : IPolyominoValidator
         return floodedSquares.Count;
     }
 
-    private List<int[]> GetAdjacentSquares(Polyomino polyomino, int y, int x, int height, int width)
+    private List<Coordinate> GetAdjacentSquares(Polyomino polyomino, Coordinate current, int height, int width)
     {
-        var response = new List<int[]>();
-        if (y > 0)
+        var response = new List<Coordinate>();
+        if (current.Y > 0)
         {
-            response.Add(new[]{y - 1, x});
+            response.Add(new Coordinate{Y = current.Y - 1, X = current.X});
         }
 
-        if (x > 0)
+        if (current.X > 0)
         {
-            response.Add(new[]{y, x - 1});
+            response.Add(new Coordinate{Y = current.Y, X = current.X - 1});
         }
 
-        if (y < height - 1)
+        if (current.Y < height - 1)
         {
-            response.Add(new[]{y + 1, x});
+            response.Add(new Coordinate{Y = current.Y + 1, X = current.X});
         }
 
-        if (x < width - 1)
+        if (current.X < width - 1)
         {
-            response.Add(new[]{y, x + 1});
+            response.Add(new Coordinate{Y = current.Y, X = current.X + 1});
         }
 
         return response;

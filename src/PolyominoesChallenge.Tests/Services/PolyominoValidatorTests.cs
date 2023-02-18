@@ -15,7 +15,7 @@ public class PolyominoValidatorTests
 
     public PolyominoValidatorTests()
     {
-        _subject = new PolyominoValidator(new IntegerArrayComparer());
+        _subject = new PolyominoValidator();
     }
 
     [Theory]
