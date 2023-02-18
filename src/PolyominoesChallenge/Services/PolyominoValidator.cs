@@ -31,24 +31,44 @@ public class PolyominoValidator : IPolyominoValidator
     {
         var width = polyomino.Rows[0].Columns.Length;
         var height = polyomino.Rows.Length;
-        for(var j = 0; j < width; j++)
-        {
-            if (polyomino.Rows.All(x => !x.Columns[j]))
-            {
-                return false;
-            }
 
-            for (var i = 0; i< polyomino.Rows.Length; i++)
+        var maxY = height - 1;
+        var columns = new int[width];
+        var diagonal1 = new int[width + height - 1];
+        var diagonal2 = new int[width + height - 1];
+
+        for (var y = 0; y < height; y++)
+        {
+            for (var x = 0; x < width; x++)
             {
-                if (polyomino.Rows[i].Columns[j] && 
-                    (i == 0 || !polyomino.Rows[i-1].Columns[j]) &&
-                    (i == height - 1 || !polyomino.Rows[i+1].Columns[j]) &&
-                    (j == 0 || !polyomino.Rows[i].Columns[j-1]) &&
-                    (j == width - 1 || !polyomino.Rows[i].Columns[j+1]))
+                var value = polyomino.Rows[y].Columns[x] ? 1 : 0;
+                columns[x] += value;
+                diagonal1[x + y] += value;
+                diagonal2[maxY - y + x] = value;
+                if (polyomino.Rows[y].Columns[x] && 
+                    (y == 0 || !polyomino.Rows[y-1].Columns[x]) &&
+                    (y == height - 1 || !polyomino.Rows[y+1].Columns[x]) &&
+                    (x == 0 || !polyomino.Rows[y].Columns[x-1]) &&
+                    (x == width - 1 || !polyomino.Rows[y].Columns[x+1]))
                 {
                     return false;
                 }
             }
+        }
+
+        if (columns.Any(x => x == 0))
+        {
+            return false;
+        }
+
+        if (diagonal1.Any(x => x == 0 && diagonal1.Take(x).Any(y => y > 0) && diagonal1.Skip(x + 1).Any(y => y > 0)))
+        {
+            return false;
+        }
+
+        if (diagonal2.Any(x => x == 0 && diagonal2.Take(x).Any(y => y > 0) && diagonal2.Skip(x + 1).Any(y => y > 0)))
+        {
+            return false;
         }
 
         return FloodPolyomino(polyomino) == size;
