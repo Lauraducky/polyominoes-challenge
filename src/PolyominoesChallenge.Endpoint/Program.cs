@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using System.Diagnostics;
+using Microsoft.Extensions.DependencyInjection;
 using PolyominoesChallenge.Endpoint;
 using PolyominoesChallenge.Services;
 
@@ -10,8 +11,12 @@ var startup = new Startup();
 startup.ConfigureServices(services);
 IServiceProvider serviceProvider = services.BuildServiceProvider();
 
+var stopwatch = new Stopwatch();
+stopwatch.Start();
 var shapeGenerator = serviceProvider.GetRequiredService<IShapeGenerator>();
 var shapes = shapeGenerator.GenerateShapes(size, allowFlippedShapes);
+stopwatch.Stop();
+Console.WriteLine($"{stopwatch.Elapsed} passed while generating shapes");
 
 if (Environment.GetCommandLineArgs().Length > 3)
 {
