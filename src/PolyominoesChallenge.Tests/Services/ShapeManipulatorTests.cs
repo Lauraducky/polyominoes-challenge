@@ -41,19 +41,6 @@ public class ShapeManipulatorTests
     }
 
     [Theory]
-    [InlineData("110101", 2, "111100", 3)]
-    [InlineData("011110", 3, "101101", 2)]
-    [InlineData("011110", 2, "110011", 3)]
-    [InlineData("1111", 1, "1111", 4)]
-    public void ItShouldReturnTheStandardRotation(string input, int inputWidth, string output, int outputWidth)
-    {
-        this.Given(x => GivenAShape(input, inputWidth))
-            .When(x => WhenGettingTheStandardRotation())
-            .Then(x => ThenItShouldReturnAShape(output, outputWidth))
-            .BDDfy();
-    }
-
-    [Theory]
     [InlineData("1111", 1, 2)]
     [InlineData("011110", 2, 2)]
     [InlineData("010111010", 3, 1)]
@@ -79,11 +66,6 @@ public class ShapeManipulatorTests
     private void WhenFlippingAShape()
     {
         _resultShape = _subject.FlipShapeHorizontally(_shape!);
-    }
-
-    private void WhenGettingTheStandardRotation()
-    {
-        _resultShape = _subject.GetStandardShapeRotation(_shape!);
     }
 
     private void WhenGettingAllShapeRotations()

@@ -23,13 +23,13 @@ public class ShapeEquivalenceComparerTests
 
     [Theory]
     // rotated shapes
-    [InlineData("111001", 3, "111001", 3, false, "001111", 3, "111100", 3, true)]
+    [InlineData("111001", 3, "111001", 3, false, "001111", 3, true)]
     // flipped shapes
-    [InlineData("110011", 3, "101101", 2, false, "110011", 3, "110011", 3, true)]
+    [InlineData("110011", 3, "101101", 2, false, "110011", 3, true)]
     // not equivalent
-    [InlineData("111001", 3, "101101", 2, false, "110011", 3, "110011", 3, false)]
+    [InlineData("111001", 3, "101101", 2, false, "110011", 3, false)]
     // not equivalent flipped allowed
-    [InlineData("110011", 3, "101101", 2, true, "110011", 3, "110011", 3, false)]
+    [InlineData("110011", 3, "101101", 2, true, "110011", 3, false)]
     // non standard rotation
     [InlineData("010111010", 3, "010111010", 3, false, "010111010", 3, "010111010", 3, true)]
     // non standard rotation, requires flip
@@ -37,14 +37,12 @@ public class ShapeEquivalenceComparerTests
     // non standard rotation, flipped allowed
     [InlineData("0100011111010100", 4, "0110001011110100", 4, true, "0110010011110010", 4, "0110010011110010", 4, false)]
     public void ItShouldTestShapeEquivalence(string a, int aWidth, string b, int bWidth, bool allowFlippedShapes,
-        string bFlipped, int bFlippedWidth, string bFlippedStandard, int bFlippedStandardWidth, 
-        bool equivalent)
+        string bFlipped, int bFlippedWidth, bool equivalent)
     {
         this.Given(x => GivenAShape(a, aWidth))
             .And(x => GivenAnotherShape(b, bWidth))
             .And(x => GivenAllowFlippedShapes(allowFlippedShapes))
             .And(x => GivenFlipShapeHorizontallyReturns(b, bWidth, bFlipped, bFlippedWidth))
-            .And(x => GivenGetStandardRotationReturns(bFlipped, bFlippedWidth, bFlippedStandard, bFlippedStandardWidth))
             .And(x => GivenGetShapeRotationsReturnsRotations())
             .When(x => WhenGettingShapeEquivalence())
             .Then(x => ThenItShouldReturn(equivalent))
@@ -64,12 +62,6 @@ public class ShapeEquivalenceComparerTests
     private void GivenAllowFlippedShapes(bool allowFlippedShapes)
     {
         _allowFlippedShapes = allowFlippedShapes;
-    }
-
-    private void GivenGetStandardRotationReturns(string input, int inputWidth, string output, int outputWidth)
-    {
-        _shapeManipulator.GetStandardShapeRotation(TestHelpers.GeneratePolyomino(input, inputWidth))
-            .Returns(TestHelpers.GeneratePolyomino(output, outputWidth));
     }
 
     private void GivenFlipShapeHorizontallyReturns(string input, int inputWidth, string output, int outputWidth)

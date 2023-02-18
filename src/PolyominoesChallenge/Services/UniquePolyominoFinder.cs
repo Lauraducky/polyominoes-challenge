@@ -5,17 +5,15 @@ namespace PolyominoesChallenge.Services;
 public class UniquePolyominoFinder : IUniquePolyominoFinder
 {
     private readonly IShapeEquivalenceComparer _shapeEquivalenceComparer;
-    private readonly IShapeManipulator _shapeManipulator;
 
-    public UniquePolyominoFinder(IShapeEquivalenceComparer shapeEquivalenceComparer, IShapeManipulator shapeManipulator)
+    public UniquePolyominoFinder(IShapeEquivalenceComparer shapeEquivalenceComparer)
     {
         _shapeEquivalenceComparer = shapeEquivalenceComparer;
-        _shapeManipulator = shapeManipulator;
     }
     
     public Polyomino[] GetUniquePolyominoes(Polyomino[] input, bool allowFlippedShapes = false)
     {
-        var output = input.Select(x => _shapeManipulator.GetStandardShapeRotation(x)).ToList();
+        var output = new List<Polyomino>(input);
         for (var i = output.Count - 1; i > 0; i--)
         {
             var current = output[i];

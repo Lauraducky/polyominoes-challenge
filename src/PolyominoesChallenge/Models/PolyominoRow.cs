@@ -1,12 +1,15 @@
 namespace PolyominoesChallenge.Models;
 
 public class PolyominoRow {
+    internal string stringRepresentation;
+
     public PolyominoRow(bool[] columns)
     {
         Columns = columns;
+        stringRepresentation = ToString();
     }
 
-    public bool[] Columns { get; set; }
+    public bool[] Columns { get; }
 
     public override bool Equals(object? obj)
     {
@@ -15,19 +18,12 @@ public class PolyominoRow {
 
     public bool Equals(PolyominoRow? other){
         return other != null &&
-            other.Columns.Length == Columns.Length &&
-            other.Columns.SequenceEqual(Columns);
+            other.stringRepresentation.Equals(this.stringRepresentation);
     }
 
     public override int GetHashCode()
     {
-        var hashCode = 17;
-        foreach(var column in Columns)
-        {
-            hashCode ^= column.GetHashCode();
-        }
-
-        return hashCode;
+        return stringRepresentation.GetHashCode();
     }
 
     public override string ToString()
